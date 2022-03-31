@@ -5,6 +5,7 @@ WORKDIR /work
 
 # Install dependencies
 RUN apk add git \
+  wget \
   openssh \
   zsh \
   tmux \
@@ -12,7 +13,8 @@ RUN apk add git \
   ripgrep \
   fzf \
   stow \
-  lm-sensors
+  lm-sensors \
+  starship
 # Install Rust
 RUN curl https://sh.rustup.rs -sSf | sh
 # Install lf
@@ -25,10 +27,18 @@ RUN stow multi-platform -t $HOME
 RUN echo "source $HOME/.config/zsh/.zshrc" > $HOME/.zshrc
 
 # Install NVM
-# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
-# RUN nvm install --lts
+# RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+# RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+  && . $HOME/.nvm/nvm.sh \
+  && nvm install --lts \
+  && nvm use --lts
+  
+# RUN echo "\nexport NVM_DIR=\"$HOME/.nvm\"" >> $HOME/.zshrc
+# RUN echo "\n[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"" >> $HOME/.zshrc
+# RUN echo "\n[ -s \"$NVM_DIR/bash_completion\" ] && \. \"$NVM_DIR/bash_completion\"" >> $HOME/.zshrc
 
-# Install fonts
+# Let Nerd fonts work
 ENV LANG en_us.utf-8
 
 # Setup tmux
@@ -37,7 +47,10 @@ RUN git clone https://github.com/tmux-plugins/tpm $HOME/.config/tmux/plugins/tpm
 RUN $HOME/.config/tmux/plugins/tpm/bin/install_plugins
 
 # Setup zsh
-
+RUN apk add libuser \
+  && touch /etc/login.defs \
+  && mkdir /etc/default \
+  && touch /etc/default/useradd
 
 # Setup neovim
 
