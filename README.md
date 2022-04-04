@@ -28,3 +28,10 @@ docker run --rm --hostname dev-machine -v $HOME:/work/home -it portable-dev
   - Map volume for `~/.tmux/ressurect`
   - Map volume for `~/.zsh_history`
   - Pass through all useful ports for dev workflow (8000, etc.)
+
+## Inspiration
+
+- https://github.com/nemanjan00/dev-environment
+- https://github.com/bancast/neovim
+- https://www.reddit.com/r/neovim/comments/mi35nz/developing_inside_docker_with_coc_and_neovim/
+  - https://pastebin.com/XcJShCSb
